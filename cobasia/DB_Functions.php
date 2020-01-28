@@ -92,6 +92,35 @@ class DB_Functions {
 		}
 		
 	}
+	
+	/**
+     * Get user berdasarkan email dan password
+     */
+    public function getMahasiswa($nim) {
+ 
+		if ($stmt = $this->conn->prepare("SELECT * FROM mahasiswa5314 WHERE nim = ?")) {
+ 
+			$stmt->bind_param("s", $nim);
+ 
+			if ($stmt->execute()) {
+				$mhs = $stmt->get_result()->fetch_assoc();
+				$stmt->close();
+ 
+				// verifikasi password user
+				/*$salt = $user['salt'];
+				$encrypted_password = $user['encrypted_password'];
+				$hash = $this->checkhashSSHA($salt, $password);
+				// cek password jika sesuai
+				if ($encrypted_password == $hash) {
+					// autentikasi user berhasil
+					return $user;
+				}*/
+				return $mhs;
+			} else {
+				return NULL;
+			}
+		}
+    }
  
     /**
      * Cek User ada atau tidak
