@@ -7,7 +7,7 @@ $response = array("error" => FALSE);
  
 if (isset($_POST['nim']) && isset($_POST['passwordlama']) && isset($_POST['passwordbaru']) && isset($_POST['konfpassword'])) {
  
-    // menerima parameter POST ( email dan password )
+    // menerima parameter POST 
     $nim = $_POST['nim'];
     $passwordlama = $_POST['passwordlama'];
 	$passwordbaru = $_POST['passwordbaru'];
