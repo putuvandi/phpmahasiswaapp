@@ -15,7 +15,7 @@ if (isset($_POST['nim']) && isset($_POST['passwordlama']) && isset($_POST['passw
 	
     // get the user by email and password
     // get user berdasarkan email dan password
-    $user = $db->getUserByEmailAndPassword($nim, $passwordlama);
+    $user = $db->getMhsByNimAndPassword($nim, $passwordlama);
  
     if ($user != false) {
 		if ($passwordbaru !== $konfpassword) {

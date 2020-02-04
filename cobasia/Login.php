@@ -14,7 +14,7 @@ if (isset($_POST['nim']) && isset($_POST['password'])) {
 	if (!($nim === '') && !($password === '')) {	
 		// get the user by email and password
 		// get user berdasarkan email dan password
-		$user = $db->getUserByEmailAndPassword($nim, $password);
+		$user = $db->getMhsByNimAndPassword($nim, $password);
  
 		if ($user != false) {
 			// user ditemukan

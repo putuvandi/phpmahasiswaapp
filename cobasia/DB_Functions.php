@@ -45,7 +45,7 @@ class DB_Functions {
     /**
      * Get user berdasarkan email dan password
      */
-    public function getUserByEmailAndPassword($nim, $password) {
+    public function getMhsByNimAndPassword($nim, $password) {
  
 		if ($stmt = $this->conn->prepare("SELECT * FROM password5314 WHERE nim = ? AND password = ?")) {
  
@@ -94,7 +94,38 @@ class DB_Functions {
 	}
 	
 	/**
-     * Get user berdasarkan email dan password
+	 * Mengganti biodata mahasiswa 
+	 */
+	public function ubahBiodata($nim, $kodeKabLahir, $tempatLahir, $tglLahir, $alamatSkr, $kodeKabSkr, $kodePosSkr, 
+	$alamatAsal, $kodeKabAsal, $kodePosAsal, $namaAyah, $email, $noHp, $nisn, $nik, $tglLahirAyah, $namaIbu, $tglLahirIbu, 
+	$nikAyah, $nikIbu) {
+		
+		$query = "UPDATE mahasiswa5314 SET kode_kabupaten_lahir = ?, tempat_lahir = ?, tgl_lahir = ?, ".
+			"alamat_skr = ?, kode_kabupaten_skr = ?, kode_pos_skr = ?, alamat_asal = ?, kode_kabupaten_asal = ?, ".
+			"kode_pos_asal = ?, nama_ayah = ?, email = ?, no_hp = ?, nisn = ?, nik = ?, tgl_lahir_ayah = ?, ".
+			"nama_ibu_kandung = ?, tgl_lahir_ibu_kandung = ?, nik_ayah = ?, nik_ibu_kandung = ? WHERE nim = ?";
+		
+		if ($stmt = $this->conn->prepare($query)) {
+			
+			$stmt->bind_param("ssssssssssssssssssss", $kodeKabLahir, $tempatLahir, $tglLahir, $alamatSkr, $kodeKabSkr, 
+			$kodePosSkr, $alamatAsal, $kodeKabAsal, $kodePosAsal, $namaAyah, $email, $noHp, $nisn, $nik, $tglLahirAyah, 
+			$namaIbu, $tglLahirIbu, $nikAyah, $nikIbu, $nim);
+			
+			if ($stmt->execute()) {
+				$stmt->close();
+				
+				//echo "Password berhasil diubah";
+				return true;
+			} else {
+				echo "Gagal mengubah biodata";
+				//return false;
+			}
+		}
+		
+	}
+	
+	/**
+     * Get user berdasarkan nim
      */
     public function getMahasiswa($nim) {
  
