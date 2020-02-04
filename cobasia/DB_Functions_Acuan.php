@@ -42,13 +42,15 @@ class DB_Functions_Acuan {
 	/**
      * Get jenis kelamin berdasarkan kodeSex
      */
-    public function getJenisKelamin($kodeSex) {
+    public function getJenisKelamin($nim) {
 		
-		//SELECT concat(status, ' ', nama_kabupaten) as kab FROM `kabupaten` WHERE kode_kabupaten = '1111' 
+		//SELECT concat(status, ' ', nama_kabupaten) as kab FROM `kabupaten` WHERE kode_kabupaten = '1111'
+		//SELECT nama_sex FROM acuan.sex s INNER JOIN sdm.pegawai p ON p.kode_sex = s.kode_sex WHERE p.kode_pegawai = 00910	
+		//SELECT nama_sex FROM sex WHERE kode_sex = ?
  
-		if ($stmt = $this->conn->prepare("SELECT nama_sex FROM sex WHERE kode_sex = ?")) {
+		if ($stmt = $this->conn->prepare("SELECT nama_sex FROM acuan.sex s INNER JOIN dbase5314.mahasiswa5314 m ON m.kode_sex = s.kode_sex WHERE m.nim = ?")) {
  
-			$stmt->bind_param("s", $kodeSex);
+			$stmt->bind_param("s", $nim);
  
 			if ($stmt->execute()) {
 				$jeniskelamin = $stmt->get_result()->fetch_assoc();

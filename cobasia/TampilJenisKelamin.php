@@ -5,13 +5,13 @@ $db = new DB_Functions_Acuan();
 // json response array
 $response = array("error" => FALSE);
  
-if (isset($_GET['kodeSex'])) {
+if (isset($_GET['nim'])) {
  
     // menerima parameter GET ( nim )
-    $kodeSex = $_GET['kodeSex'];
+    $nim = $_GET['nim'];
  
     // get mahasiswa
-    $sex = $db->getJenisKelamin($kodeSex);
+    $sex = $db->getJenisKelamin($nim);
  
     if ($sex != false) {
         // user ditemukan
