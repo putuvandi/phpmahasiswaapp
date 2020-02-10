@@ -124,6 +124,25 @@ class DB_Functions {
 		
 	}
 	
+	public function ubahKodeKabupatenLahir($nim, $kodeKabLahir) {
+		$query = "UPDATE mahasiswa5314 SET kode_kabupaten_lahir = (SELECT kode_kabupaten FROM acuan.kabupaten WHERE nama_kabupaten = ?) WHERE nim = ?";
+		
+		if ($stmt = $this->conn->prepare($query)) {
+			
+			$stmt->bind_param("ss", $kodeKabLahir, $nim);
+			
+			if ($stmt->execute()) {
+				$stmt->close();
+				
+				//echo "Password berhasil diubah";
+				return true;
+			} else {
+				echo "Gagal mengubah biodata";
+				//return false;
+			}
+		}
+	}
+	
 	/**
      * Get user berdasarkan nim
      */
@@ -152,6 +171,130 @@ class DB_Functions {
 			}
 		}
     }
+	
+	/**
+     * Get kabupaten berdasarkan kodeKabupaten
+     */
+    public function getKabupaten($kodeKabupaten) {
+		
+		//SELECT concat(status, ' ', nama_kabupaten) as kab FROM `kabupaten` WHERE kode_kabupaten = '1111' 
+ 
+		if ($stmt = $this->conn->prepare("SELECT nama_kabupaten FROM acuan.kabupaten k WHERE k.kode_kabupaten = ?")) {
+ 
+			$stmt->bind_param("s", $kodeKabupaten);
+ 
+			if ($stmt->execute()) {
+				$kabupaten = $stmt->get_result()->fetch_assoc();
+				$stmt->close();
+				
+				return $kabupaten;
+			} else {
+				return NULL;
+			}
+		}
+    }
+	
+	/**
+     * Get jenis kelamin berdasarkan kodeSex
+     */
+    public function getJenisKelamin($nim) {
+		
+		//SELECT concat(status, ' ', nama_kabupaten) as kab FROM `kabupaten` WHERE kode_kabupaten = '1111'
+		//SELECT nama_sex FROM acuan.sex s INNER JOIN sdm.pegawai p ON p.kode_sex = s.kode_sex WHERE p.kode_pegawai = 00910	
+		//SELECT nama_sex FROM sex WHERE kode_sex = ?
+ 
+		if ($stmt = $this->conn->prepare("SELECT nama_sex FROM acuan.sex s INNER JOIN dbase5314.mahasiswa5314 m ON m.kode_sex = s.kode_sex WHERE m.nim = ?")) {
+ 
+			$stmt->bind_param("s", $nim);
+ 
+			if ($stmt->execute()) {
+				$jeniskelamin = $stmt->get_result()->fetch_assoc();
+				$stmt->close();
+				
+				return $jeniskelamin;
+			} else {
+				return NULL;
+			}
+		}
+    }
+	
+	/**
+     * Get jenis kelamin berdasarkan kodeSex
+     */
+    public function getAllKabupaten() {
+ 
+		if ($stmt = $this->conn->query("SELECT nama_kabupaten from acuan.kabupaten")) {
+ 
+			//$stmt->bind_param("s", $nim);
+ 
+			//if ($stmt->execute()) {
+			$output = array();
+			while ($baris = mysqli_fetch_assoc($stmt)) {
+				//$output[] = $baris['nama_kabupaten'];
+				array_push($output,array("kabupaten"=>$baris['nama_kabupaten']));
+			}
+			echo json_encode(array('result'=>$output));
+			//$jumlahBaris = $stmt->num_rows;
+			//if($jumlahBaris >= 1) {
+				//$row_all = mysqli_fetch_all($stmt,MYSQLI_ASSOC);
+				//header('Content-type: application/json');
+				//echo json_encode($row_all); 		
+			//} else {
+				//echo "no rows";
+			//} 
+			//} else {
+				//return NULL;
+			//}
+		}
+    }
+	
+	/**
+     * Get jenis kelamin berdasarkan kodeSex
+     */
+    public function getAllStatusPegawai() {
+ 
+		if ($stmt = $this->conn->query("SELECT nama_stats_pegawai from acuan.status_pegawai")) {
+ 
+			//$stmt->bind_param("s", $nim);
+ 
+			//if ($stmt->execute()) {
+			$output = array();
+			while ($baris = mysqli_fetch_assoc($stmt)) {
+				//$output[] = $baris['nama_kabupaten'];
+				array_push($output,array("status_pegawai"=>$baris['nama_stats_pegawai']));
+			}
+			echo json_encode(array('result'=>$output));
+			//$jumlahBaris = $stmt->num_rows;
+			//if($jumlahBaris >= 1) {
+				//$row_all = mysqli_fetch_all($stmt,MYSQLI_ASSOC);
+				//header('Content-type: application/json');
+				//echo json_encode($row_all); 		
+			//} else {
+				//echo "no rows";
+			//} 
+			//} else {
+				//return NULL;
+			//}
+		}
+    }
+	
+	public function getStatusPegawai($kodePegawai) {
+		if ($stmt = $this->conn->prepare("SELECT nama_stats_pegawai FROM acuan.status_pegawai s INNER JOIN
+		sdm.pegawai p ON p.kode_status_pegawai = s.kode_status_pegawai WHERE p.kode_pegawai = ?")) {
+			
+			$stmt->bind_param("s", $kodePegawai);
+			
+			if ($stmt->execute()) {
+				$statuspegawai = $stmt->get_result()->fetch_assoc();
+				$stmt->close();
+				
+				return $statuspegawai;
+			} else {
+				return NULL;
+			}
+			
+		}
+	}
  
     /**
      * Cek User ada atau tidak

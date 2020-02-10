@@ -1,6 +1,6 @@
 <?php
-require_once 'DB_Functions_Acuan.php';
-$db = new DB_Functions_Acuan();
+require_once 'DB_Functions.php';
+$db = new DB_Functions();
  
 // json response array
 $response = array("error" => FALSE);

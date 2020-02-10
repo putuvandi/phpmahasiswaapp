@@ -5,18 +5,18 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
  
-if (isset($_GET['kodeKabupaten'])) {
+if (isset($_GET['kode_pegawai'])) {
  
     // menerima parameter GET ( nim )
-    $kodeKabupaten = $_GET['kodeKabupaten'];
+    $kode_pegawai = $_GET['kode_pegawai'];
  
     // get mahasiswa
-    $kab = $db->getKabupaten($kodeKabupaten);
+    $statuspegawai = $db->getStatusPegawai($kode_pegawai);
  
-    if ($kab != false) {
+    if ($statuspegawai != false) {
         // user ditemukan
         $response["error"] = FALSE;
-        $response["kabupaten"] = $kab["nama_kabupaten"];
+        $response["status_pegawai"] = $statuspegawai["nama_stats_pegawai"];
         echo json_encode($response);
     } else {
         // user tidak ditemukan password/email salah
