@@ -100,10 +100,12 @@ class DB_Functions {
 	$alamatAsal, $kodeKabAsal, $kodePosAsal, $namaAyah, $email, $noHp, $nisn, $nik, $tglLahirAyah, $namaIbu, $tglLahirIbu, 
 	$nikAyah, $nikIbu) {
 		
-		$query = "UPDATE mahasiswa5314 SET kode_kabupaten_lahir = ?, tempat_lahir = ?, tgl_lahir = ?, ".
-			"alamat_skr = ?, kode_kabupaten_skr = ?, kode_pos_skr = ?, alamat_asal = ?, kode_kabupaten_asal = ?, ".
-			"kode_pos_asal = ?, nama_ayah = ?, email = ?, no_hp = ?, nisn = ?, nik = ?, tgl_lahir_ayah = ?, ".
-			"nama_ibu_kandung = ?, tgl_lahir_ibu_kandung = ?, nik_ayah = ?, nik_ibu_kandung = ? WHERE nim = ?";
+		$subquery = "SELECT kode_kabupaten FROM acuan.kabupaten WHERE nama_kabupaten = ?";
+		
+		$query = "UPDATE mahasiswa5314 SET kode_kabupaten_lahir = (".$subquery."), tempat_lahir = ?, tgl_lahir = ?, ".
+			"alamat_skr = ?, kode_kabupaten_skr = (".$subquery."), kode_pos_skr = ?, alamat_asal = ?, ".
+			"kode_kabupaten_asal = (".$subquery."), kode_pos_asal = ?, nama_ayah = ?, email = ?, no_hp = ?, nisn = ?, nik = ?, ".
+			"tgl_lahir_ayah = ?, nama_ibu_kandung = ?, tgl_lahir_ibu_kandung = ?, nik_ayah = ?, nik_ibu_kandung = ? WHERE nim = ?";
 		
 		if ($stmt = $this->conn->prepare($query)) {
 			
