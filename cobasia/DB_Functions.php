@@ -149,10 +149,18 @@ class DB_Functions {
      * Get user berdasarkan nim
      */
     public function getMahasiswa($nim) {
+		
+		$subquery = "SELECT nama_kabupaten FROM acuan.kabupaten k WHERE k.kode_kabupaten = ";
+		$subquery2 = "(SELECT nama_sex FROM acuan.sex s INNER JOIN dbase5314.mahasiswa5314 m ON m.kode_sex = s.kode_sex WHERE m.nim = ?)";
+		
+		$query = "SELECT nim, nama_mahasiswa, (".$subquery."kode_kabupaten_lahir) as kode_kab_lahir, tempat_lahir, tgl_lahir, ".
+		$subquery2." as jenis_kelamin, alamat_skr, (".$subquery."kode_kabupaten_skr) as kode_kab_skr, kode_pos_skr, alamat_asal, ".
+		"(".$subquery."kode_kabupaten_asal) as kode_kab_asal, kode_pos_asal, nama_ayah, email, no_hp, nisn, nik, tgl_lahir_ayah, ".
+		"nama_ibu_kandung, tgl_lahir_ibu_kandung, nik_ayah, nik_ibu_kandung FROM mahasiswa5314 WHERE nim = ?";
+		
+		if ($stmt = $this->conn->prepare($query)) {
  
-		if ($stmt = $this->conn->prepare("SELECT * FROM mahasiswa5314 WHERE nim = ?")) {
- 
-			$stmt->bind_param("s", $nim);
+			$stmt->bind_param("ss", $nim, $nim);
  
 			if ($stmt->execute()) {
 				$mhs = $stmt->get_result()->fetch_assoc();
@@ -168,52 +176,6 @@ class DB_Functions {
 					return $user;
 				}*/
 				return $mhs;
-			} else {
-				return NULL;
-			}
-		}
-    }
-	
-	/**
-     * Get kabupaten berdasarkan kodeKabupaten
-     */
-    public function getKabupaten($kodeKabupaten) {
-		
-		//SELECT concat(status, ' ', nama_kabupaten) as kab FROM `kabupaten` WHERE kode_kabupaten = '1111' 
- 
-		if ($stmt = $this->conn->prepare("SELECT nama_kabupaten FROM acuan.kabupaten k WHERE k.kode_kabupaten = ?")) {
- 
-			$stmt->bind_param("s", $kodeKabupaten);
- 
-			if ($stmt->execute()) {
-				$kabupaten = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				
-				return $kabupaten;
-			} else {
-				return NULL;
-			}
-		}
-    }
-	
-	/**
-     * Get jenis kelamin berdasarkan kodeSex
-     */
-    public function getJenisKelamin($nim) {
-		
-		//SELECT concat(status, ' ', nama_kabupaten) as kab FROM `kabupaten` WHERE kode_kabupaten = '1111'
-		//SELECT nama_sex FROM acuan.sex s INNER JOIN sdm.pegawai p ON p.kode_sex = s.kode_sex WHERE p.kode_pegawai = 00910	
-		//SELECT nama_sex FROM sex WHERE kode_sex = ?
- 
-		if ($stmt = $this->conn->prepare("SELECT nama_sex FROM acuan.sex s INNER JOIN dbase5314.mahasiswa5314 m ON m.kode_sex = s.kode_sex WHERE m.nim = ?")) {
- 
-			$stmt->bind_param("s", $nim);
- 
-			if ($stmt->execute()) {
-				$jeniskelamin = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				
-				return $jeniskelamin;
 			} else {
 				return NULL;
 			}

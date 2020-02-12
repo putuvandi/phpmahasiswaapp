@@ -19,17 +19,17 @@ if (isset($_GET['nim'])) {
         //$response["uid"] = $user["unique_id"];
         $response["mahasiswa"]["nim"] = $mhs["nim"];
 		$response["mahasiswa"]["nama_mahasiswa"] = $mhs["nama_mahasiswa"];
-		$response["mahasiswa"]["kode_kabupaten_lahir"] = $mhs["kode_kabupaten_lahir"];
+		$response["mahasiswa"]["kode_kabupaten_lahir"] = $mhs["kode_kab_lahir"];
 		$response["mahasiswa"]["tempat_lahir"] = $mhs["tempat_lahir"];
 		//$tgl_lahir = new DateTime($mhs["tgl_lahir"]);
 		//$response["mahasiswa"]["tanggal_lahir"] = $tgl_lahir->format('Y-m-d');
 		$response["mahasiswa"]["tgl_lahir"] = date('Y-m-d', strtotime($mhs["tgl_lahir"]));
-		$response["mahasiswa"]["jenis_kelamin"] = $mhs["kode_sex"];
+		$response["mahasiswa"]["jenis_kelamin"] = $mhs["jenis_kelamin"];
 		$response["mahasiswa"]["alamat_skr"] = $mhs["alamat_skr"];
-		$response["mahasiswa"]["kode_kabupaten_skr"] = $mhs["kode_kabupaten_skr"];
+		$response["mahasiswa"]["kode_kabupaten_skr"] = $mhs["kode_kab_skr"];
 		$response["mahasiswa"]["kode_pos_skr"] = $mhs["kode_pos_skr"];
 		$response["mahasiswa"]["alamat_asal"] = $mhs["alamat_asal"];
-		$response["mahasiswa"]["kode_kabupaten_asal"] = $mhs["kode_kabupaten_asal"];
+		$response["mahasiswa"]["kode_kabupaten_asal"] = $mhs["kode_kab_asal"];
 		$response["mahasiswa"]["kode_pos_asal"] = $mhs["kode_pos_asal"];
 		$response["mahasiswa"]["nama_ayah"] = $mhs["nama_ayah"];
 		$response["mahasiswa"]["email"] = $mhs["email"];
@@ -50,7 +50,7 @@ if (isset($_GET['nim'])) {
     }
 } else {
     $response["error"] = TRUE;
-    $response["error_msg"] = "Gagal mengambil data";
+    $response["error_msg"] = "tidak dapat mengambil data";
     echo json_encode($response);
 }
 ?>
